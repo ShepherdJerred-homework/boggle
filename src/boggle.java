@@ -30,10 +30,10 @@ public class boggle {
              inputs.add(line);
          }
 
-        System.out.println(Arrays.deepToString(cube));
+//        System.out.println(Arrays.deepToString(cube));
 
         for (String input : inputs) {
-            System.out.println(input);
+//            System.out.println(input);
 
             boolean result = false;
             char[] inputChars = input.toCharArray();
@@ -48,13 +48,15 @@ public class boggle {
                     break;
                 }
             }
+
+            String output;
             if (result) {
-                printWriter.println(String.format("%s  %s", input, "VALID"));
-                System.out.println(String.format("%s  %s", input, "VALID"));
+                output = String.format("%-17s  %s", input, "VALID");
             } else {
-                printWriter.println(String.format("%s  %s", input, "INVALID"));
-                System.out.println(String.format("%s  %s", input, "INVALID"));
+                output = String.format("%-18s %s", input, "NOT VALID");
             }
+            System.out.println(output);
+            printWriter.println(output);
         }
         printWriter.close();
     }
@@ -65,18 +67,18 @@ public class boggle {
         }
 
         if (usedChars[currRow][currColumn]) {
-            System.out.println(String.format("Skipping r %s  c %s", currRow, currColumn));
+//            System.out.println(String.format("Skipping r %s  c %s", currRow, currColumn));
             return false;
         }
 
         char currentChar = string[currStringPos];
 
-        System.out.println(String.format("s %s  csp %s   r %s  c %s   cc %s", Arrays.toString(string), currStringPos, currRow, currColumn, currentChar));
+//        System.out.println(String.format("s %s  csp %s   r %s  c %s   cc %s", Arrays.toString(string), currStringPos, currRow, currColumn, currentChar));
 
         if (currentChar != cube[currRow][currColumn]) {
             return false;
         } else {
-            System.out.println(String.format("%s found at r %s c %s", currentChar, currRow, currColumn));
+//            System.out.println(String.format("%s found at r %s c %s", currentChar, currRow, currColumn));
             if (currStringPos == string.length - 1) {
                 return true;
             }
