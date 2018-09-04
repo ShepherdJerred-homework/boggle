@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -22,13 +21,13 @@ public class boggle {
 
         LinkedList<String> inputs = new LinkedList<>();
 
-         while (scanner.hasNextLine()) {
-             String line = scanner.nextLine();
-             if (line.equals("*")) {
-                 break;
-             }
-             inputs.add(line);
-         }
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.equals("*")) {
+                break;
+            }
+            inputs.add(line);
+        }
 
 //        System.out.println(Arrays.deepToString(cube));
 
@@ -51,9 +50,9 @@ public class boggle {
 
             String output;
             if (result) {
-                output = String.format("%-17s  %s", input, "VALID");
+                output = String.format("%-17.17s%-1s", input, "VALID");
             } else {
-                output = String.format("%-18s %s", input, "NOT VALID");
+                output = String.format("%-17.17s%-1s", input, "NOT VALID");
             }
             System.out.println(output);
             printWriter.println(output);
@@ -62,6 +61,8 @@ public class boggle {
     }
 
     public static boolean findString(char[] string, int currStringPos, int currRow, int currColumn, char[][] cube, boolean[][] usedChars) {
+//        usedChars = copy(usedChars);
+
         if (currRow > 3 || currRow < 0 || currColumn > 3 || currColumn < 0) {
             return false;
         }
@@ -86,63 +87,19 @@ public class boggle {
 
         usedChars[currRow][currColumn] = true;
 
-        // l
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow - 1, currColumn, cube, usedChars)) {
-            return true;
+        for (int row = -1; row <= 1; row++) {
+            for (int column = -1; column <= 1; column++) {
+                if (row == 0 && column == 0) {
+                    continue;
+                }
+                if (findString(string, currStringPos + 1, currRow + row, currColumn + column, cube, usedChars)) {
+                    return true;
+                }
+            }
         }
 
-        // r
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow + 1, currColumn, cube, usedChars)) {
-            return true;
-        }
-
-        // u
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow, currColumn + 1, cube, usedChars)) {
-            return true;
-        }
-
-        // d
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow, currColumn - 1, cube, usedChars)) {
-            return true;
-        }
-
-        // l u
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow - 1, currColumn + 1, cube, usedChars)) {
-            return true;
-        }
-
-        // l d
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow - 1, currColumn - 1, cube, usedChars)) {
-            return true;
-        }
-
-        // r u
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow + 1, currColumn + 1, cube, usedChars)) {
-            return true;
-        }
-
-        // r d
-        usedChars = copy(usedChars);
-        if (findString(string, currStringPos + 1, currRow + 1, currColumn - 1, cube, usedChars)) {
-            return true;
-        }
+        usedChars[currRow][currColumn] = false;
 
         return false;
-    }
-
-    // https://stackoverflow.com/questions/1564832/how-do-i-do-a-deep-copy-of-a-2d-array-in-java
-    public static boolean[][] copy(boolean[][] original) {
-        boolean[][] copy = new boolean[original.length][];
-        for (int i = 0; i < original.length; i++) {
-            copy[i] = Arrays.copyOf(original[i], original[i].length);
-        }
-        return copy;
     }
 }
